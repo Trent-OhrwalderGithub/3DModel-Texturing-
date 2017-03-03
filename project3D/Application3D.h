@@ -46,6 +46,8 @@ protected:
 	Shader* m_StormTrooperShader;
 	OBJMesh m_StormTrooper;
 	TextureRender* m_StormTrooperDiffuse;
+	TextureRender* m_StormTrooperNormal;
+	TextureRender* m_StormTrooperSpecular;
 
 	Shader* m_Tie_FighterShader;
 	OBJMesh m_TIE_Fighter;

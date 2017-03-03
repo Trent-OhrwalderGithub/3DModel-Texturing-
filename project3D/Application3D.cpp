@@ -61,6 +61,8 @@ bool Application3D::startup() {
 	m_StormTrooper = RenderModel::LoadOBJFromDisk("./models/starwars/Stormtrooper.obj");
 	m_StormTrooperShader = new Shader("./shaders/TextureRender.vert", "./shaders/TextureRender.frag");
 	m_StormTrooperDiffuse = new TextureRender("./models/StormTrooperTexture/Stormtrooper_D.tga");
+	m_StormTrooperNormal = new TextureRender("./models/StormTrooperTexture/Stormtrooper_N.tga");
+	m_StormTrooperSpecular = new TextureRender("./models/StormTrooperTexture/Stormtrooper_S.tga");
 	//
 	//m_TIE_Fighter = RenderModel::LoadOBJFromDisk("./models/starwars/TIE-fighter.obj");
 	//m_Tie_FighterShader = new Shader("./shaders/objRender.vert", "./shaders/objRender.frag");
@@ -83,7 +85,7 @@ void Application3D::shutdown() {
 
 void Application3D::update(float deltaTime) {
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Draws in wire form.
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Draws in wire form.
 
 	// query time since application started
 	float time = getTime();
@@ -216,9 +218,15 @@ void Application3D::draw() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_StormTrooperDiffuse->GetTextureID());
 
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_StormTrooperNormal->GetNormalID());
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_StormTrooperSpecular->GetSpecularMapID());
+
 	loc = glGetUniformLocation(m_StormTrooperShader->GetProgramID(), "myTextureSampler");
 	assert(loc != -1);
-	glUniform1i(loc, 0);
+	glUniform1i(loc, 0); // Change between, 0-2 to load different maps. (Diffuse, Normal & Specular.
 
 	for (auto& renderData : m_StormTrooper)
 	{
